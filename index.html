@@ -1,0 +1,159 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Matching Game</title>
+        <style>
+            
+            
+            body{
+                background-color: #eaeaea;
+                margin-left: -5px;
+            }
+            div{
+                position: absolute;
+                height: 500px;
+                width: 50%;
+                background:#2a7578 ;
+                 }
+            
+            #rightDiv{
+                border-left: 5px solid black;
+                left: 50%;
+                margin-left: -5px;
+                
+                
+                }
+            img{
+                position: absolute;
+                height:100px;
+                width: 100px;
+            }
+            #header{
+                width:100%;
+                height:300px;
+                background-color: red;
+                float: left;
+                clear: both;
+                position: absolute;
+            }
+            #newgame{
+                margin-left: 20px;
+
+            }
+            #newgame{
+                background-color: #2a7578;
+                font-size: 24px;
+                cursor: pointer;
+                color: white;
+
+            }
+            #result{
+                font-size: 24px;
+                padding: 0;
+            }
+
+        </style>
+    
+    </head>
+    <body id ="theBody" onload="generateFaces()" >
+        <input type="button" name="reload" id="newgame" value="Start A New Game!">
+        <!--<div>hello</div>-->
+        <center><h2 style="color:green" id ="timer">Matching Game!</h2>
+        <h3 style="color:purple" id="result">Click on the extra smiling face on the left</h3></center>
+        
+        <div id="leftDiv">
+            <h1 id="endgame"></h1>
+        </div>
+        <div id="rightDiv"></div>
+        <script>
+            var leftSide = document.getElementById("leftDiv");
+            var counter = 0;
+            var numberOfFaces= 3 ;
+            var t ;
+            var i=0;
+            var seconds_left = 10;
+            var showResult = document.getElementById("result");
+            var interval = setInterval(function() {
+    document.getElementById("timer").innerHTML ="Timer: "+ seconds_left--;
+    if (seconds_left <= 0)
+    {
+        document.getElementById("timer").innerHTML = "Game Over";
+        document.getElementById("timer").style.color = "red";
+        document.getElementById("timer").style.background ="black";
+
+        clearInterval(interval);
+    }
+}, 1000);
+            document.getElementById("newgame").onclick = function NewGame(){
+                location.reload();
+            }
+
+        function generateFaces(){
+            for(var i=0;i<numberOfFaces;i++){
+                topRandom = Math.floor(Math.random()*400) ;
+                
+                leftRandom = Math.floor(Math.random()*500);
+                
+                face = document.createElement("img");
+                face.src = "LoveEmoMatchingGame.png" ;
+                face.style.top = topRandom + "px";
+                face.style.left= leftRandom + "px";
+                leftSide.appendChild(face) ;
+                 }
+            var rightSide = document.getElementById("rightDiv");
+            var leftSideImages= leftSide.cloneNode(true);
+            leftSideImages.removeChild(leftSideImages.lastChild);
+            rightSide.appendChild(leftSideImages);
+             var theBody = document.getElementsByTagName("body")[0];
+             
+
+           t= setTimeout(ovr,10000);
+            leftSide.lastChild.onclick =function nextLevel(event){
+                clearTimeout(t);
+                counter++ ;
+                event.stopPropagation();
+               while (leftSide.hasChildNodes()) {//deleting all the child of left div cuz level is compltd new image will be appeared
+                    leftSide.removeChild(leftSide.lastChild);
+                        }
+                while (rightSide.hasChildNodes()) {//deleting all the child of right div cuz level is compltd new image will be appeared
+                    rightSide.removeChild(rightSide.lastChild);
+                        }
+                numberOfFaces+=2 ;//increasing face number for next level.
+                generateFaces() ;//generating faces again if the click was right
+                //i=i+1;
+                //alert("I=" + i);
+                seconds_left= 10;
+                
+                
+            }
+            leftSide.onclick = ovr ;
+        }
+           //setTimeout(gameOver,5000);
+
+           ovr = function gameOver(){
+               
+               //alert("Game Over! Level completed: "+ counter);
+               seconds_left = -1;
+               theBody.style.backgroundColor="#a8a8a8";
+               document.getElementById("result").innerHTML = "Level Completed : " + counter+ " !";
+               leftSide.lastChild.src = "lost.png"
+               leftSide.onclick = null ;
+                leftSide.lastChild.onclick = null;
+               //var newGame = confirm("Start a new game?");
+               /*if(newGame)
+               location.reload();
+               else{
+                   
+                   
+               }*/
+           }
+           
+
+            
+           
+            
+        </script>
+        
+        
+    </body>
+</html>
